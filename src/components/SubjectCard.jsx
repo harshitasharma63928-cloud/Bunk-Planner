@@ -3,6 +3,7 @@ import { markAttendance ,deleteSubject } from '../store/subjectsSlice';
 import { getPercentage } from '../utils/getPercentage';
 import { calculateBunks, classesToRecover } from '../utils/calculateBunks';
 
+
 function SubjectCard({ subject }) {
   const dispatch = useDispatch();
   const { id, name, attended, total } = subject;
@@ -10,7 +11,12 @@ function SubjectCard({ subject }) {
   const percentage = getPercentage(attended, total);
   const bunks = calculateBunks(attended, total);
   const needed = classesToRecover(attended, total);
-
+  const colorClass = getPercentageColor(percentage);
+function getPercentageColor(percentage){
+  if(percentage>=75) return "green";
+  if(percentage>=65) return "orange";
+  return 'red';
+}
 
   return (
     <article className="card">
@@ -21,7 +27,7 @@ function SubjectCard({ subject }) {
         </button>
       </div>
 
-      <p className="percentage">{percentage.toFixed(1)}%</p>
+      <p className={`percentage  ${colorClass}`}>{percentage.toFixed(1)}%</p>
       <p className="muted">
         Attended {attended} of {total} classes
       </p>
